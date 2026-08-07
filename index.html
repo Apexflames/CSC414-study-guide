@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>CSC 414 — Human Computer Interaction | APEXHUB Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EEF0F4; --bg-alt:#E2E5EC; --card:#FFFFFF; --card-border:#D7DBE3;
+    --ink:#1B1F27; --ink-soft:#5A6072; --ink-faint:#8A90A0;
+    --window:#3B5BDB; --window-soft:#EAEEFC;
+    --icon:#C97D0F; --icon-soft:#FBF0DD;
+    --menu:#D0454F; --menu-soft:#FBEAEB;
+    --pointer:#6A46E5; --pointer-soft:#EFEAFD;
+    --shadow: 0 1px 2px rgba(20,22,30,.04), 0 8px 24px rgba(20,22,30,.06);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --maxw: 760px;
+  }
+  [data-theme="dark"]{
+    --bg:#12141A; --bg-alt:#171A22; --card:#1B1E28; --card-border:#2B2F3C;
+    --ink:#EAECF1; --ink-soft:#AEB4C4; --ink-faint:#767C8D;
+    --window:#7C93F5; --window-soft:#1E243D;
+    --icon:#F0AC4E; --icon-soft:#332608;
+    --menu:#F1818A; --menu-soft:#341B1E;
+    --pointer:#A78BFA; --pointer-soft:#241B3D;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif; line-height:1.6;
+    font-size:16px; transition:background .3s ease, color .3s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1,h2,h3,h4{font-family:'Space Grotesk',system-ui,sans-serif; font-weight:700; line-height:1.15; margin:0;}
+  code, .mono{font-family:'IBM Plex Mono',monospace;}
+  p{margin:0 0 .8em 0;}
+  a{color:var(--window);}
+  ::selection{background:var(--pointer-soft); color:var(--pointer);}
+  button{font-family:inherit; cursor:pointer;}
+
+  /* ---------- TOP NAV ---------- */
+  .topnav{
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--card-border);
+  }
+  .topnav-inner{display:flex; align-items:center; gap:10px; padding:10px 14px;}
+  .course-chip{
+    font-family:'Space Grotesk'; font-weight:700; font-size:.82rem; letter-spacing:.03em;
+    background:var(--pointer); color:#fff; padding:7px 11px; border-radius:8px; flex-shrink:0;
+  }
+  .navlinks{display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; flex:1;}
+  .navlinks::-webkit-scrollbar{display:none;}
+  .navlinks a{
+    white-space:nowrap; text-decoration:none; color:var(--ink-soft); font-size:.83rem; font-weight:600;
+    padding:9px 12px; border-radius:20px; background:var(--bg-alt); flex-shrink:0; min-height:32px; display:flex; align-items:center;
+    border:1px solid transparent;
+  }
+  .navlinks a:hover{border-color:var(--card-border); color:var(--ink);}
+  .theme-toggle{
+    flex-shrink:0; border:1px solid var(--card-border); background:var(--card); color:var(--ink);
+    width:40px; height:40px; border-radius:50%; font-size:1.1rem; display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:34px 18px 22px; max-width:var(--maxw); margin:0 auto;}
+  .hero-eyebrow{color:var(--pointer); font-weight:700; font-size:.78rem; letter-spacing:.09em; text-transform:uppercase; margin-bottom:10px;}
+  .hero h1{font-size:1.9rem; margin-bottom:10px;}
+  .hero .sub{color:var(--ink-soft); font-size:1.03rem; margin-bottom:16px;}
+  .covers{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:22px;}
+  .covers span{
+    font-size:.74rem; font-weight:600; color:var(--ink-soft); background:var(--bg-alt);
+    border:1px solid var(--card-border); padding:5px 10px; border-radius:20px;
+  }
+  /* WIMP legend - signature color key used throughout */
+  .wimp-legend{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:6px;
+  }
+  .wimp-chip{
+    border-radius:var(--radius-sm); padding:10px 8px; text-align:center; border:1px solid var(--card-border);
+  }
+  .wimp-chip .dot{width:10px;height:10px;border-radius:50%;margin:0 auto 6px;}
+  .wimp-chip .lbl{font-family:'Space Grotesk'; font-weight:700; font-size:.72rem;}
+  .wimp-chip .sub2{font-size:.65rem; color:var(--ink-faint); margin-top:2px;}
+  .w-window{background:var(--dot,inherit);}
+
+  .hero-cursor-demo{
+    margin-top:20px; border-radius:var(--radius); border:1px solid var(--card-border); background:var(--card);
+    padding:18px; box-shadow:var(--shadow); position:relative; overflow:hidden; min-height:120px;
+  }
+  .hero-cursor-demo .hc-caption{font-size:.78rem; color:var(--ink-faint); margin-bottom:10px; font-weight:600;}
+  .hc-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .hc-icon{
+    width:58px; height:58px; border-radius:12px; background:var(--bg-alt); display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem; border:1px solid var(--card-border); position:relative; transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .hc-icon.pop{transform:translateY(-6px) scale(1.08); box-shadow:0 6px 18px rgba(0,0,0,.15); border-color:var(--pointer);}
+  #heroCursor{
+    position:absolute; font-size:1.2rem; transition:left .5s cubic-bezier(.4,0,.2,1), top .5s cubic-bezier(.4,0,.2,1);
+    pointer-events:none; z-index:5;
+  }
+
+  .footer-line{color:var(--ink-faint); font-size:.78rem; margin-top:20px; padding-top:14px; border-top:1px dashed var(--card-border);}
+
+  /* ---------- HOW TO USE ---------- */
+  .howto{
+    max-width:var(--maxw); margin:0 auto 8px; padding:0 18px;
+  }
+  .howto-box{
+    background:var(--pointer-soft); border:1px solid var(--card-border); border-radius:var(--radius);
+    padding:16px 16px; font-size:.88rem;
+  }
+  .howto-box h3{font-size:.95rem; margin-bottom:8px; color:var(--pointer);}
+  .howto-box ul{margin:0; padding-left:1.1em;}
+  .howto-box li{margin-bottom:4px;}
+
+  /* ---------- MAIN CONTAINER ---------- */
+  main{max-width:var(--maxw); margin:0 auto; padding:26px 18px 60px;}
+  section.topic{margin-bottom:42px; scroll-margin-top:64px;}
+
+  .topic-head{display:flex; gap:14px; align-items:flex-start; margin-bottom:16px;}
+  .badge-num{
+    font-family:'Space Grotesk'; font-weight:700; font-size:1.3rem; color:#fff; background:var(--window);
+    width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .topic-head h2{font-size:1.32rem; margin-bottom:4px;}
+  .topic-head .desc{color:var(--ink-soft); font-size:.9rem;}
+
+  .subsec{margin:20px 0;}
+  .subsec h3{font-size:1.02rem; margin-bottom:8px; display:flex; gap:8px; align-items:baseline;}
+  .subsec h3 .num{color:var(--window); font-family:'IBM Plex Mono'; font-size:.85rem; font-weight:500;}
+  .subsec p{color:var(--ink); font-size:.95rem;}
+
+  /* ---------- CALLOUTS ---------- */
+  .callout{
+    border-radius:var(--radius-sm); padding:13px 14px; margin:12px 0; font-size:.88rem; border:1px solid transparent;
+  }
+  .callout .co-title{font-weight:700; font-family:'Space Grotesk'; font-size:.82rem; margin-bottom:5px; display:flex; gap:6px; align-items:center;}
+  .co-plain{background:var(--pointer-soft); border-color:color-mix(in srgb, var(--pointer) 25%, transparent);}
+  .co-plain .co-title{color:var(--pointer);}
+  .co-real{background:var(--icon-soft); border-color:color-mix(in srgb, var(--icon) 25%, transparent);}
+  .co-real .co-title{color:var(--icon);}
+  .co-formal{background:var(--window-soft); border-color:color-mix(in srgb, var(--window) 25%, transparent);}
+  .co-formal .co-title{color:var(--window);}
+  .co-insight{background:var(--menu-soft); border-color:color-mix(in srgb, var(--menu) 25%, transparent);}
+  .co-insight .co-title{color:var(--menu);}
+  .co-tip{background:var(--icon-soft); border-color:color-mix(in srgb, var(--icon) 30%, transparent); border-style:dashed;}
+  .co-tip .co-title{color:var(--icon);}
+
+  /* ---------- TABLES ---------- */
+  .tbl-wrap{overflow-x:auto; margin:14px 0; border-radius:var(--radius-sm); border:1px solid var(--card-border);}
+  table{border-collapse:collapse; width:100%; font-size:.83rem; min-width:420px;}
+  thead th{
+    background:var(--bg-alt); text-align:left; padding:9px 10px; font-family:'Space Grotesk'; font-weight:700;
+    color:var(--ink); border-bottom:1px solid var(--card-border); white-space:nowrap;
+  }
+  tbody td{padding:9px 10px; border-bottom:1px solid var(--card-border); color:var(--ink-soft); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr td:first-child{color:var(--ink); font-weight:600;}
+  tr.analogy-row td{background:var(--pointer-soft); font-style:italic;}
+
+  /* ---------- ACCORDION ---------- */
+  .acc{border:1px solid var(--card-border); border-radius:var(--radius-sm); margin:12px 0; overflow:hidden; background:var(--card);}
+  .acc-btn{
+    width:100%; text-align:left; background:none; border:none; padding:13px 14px; font-size:.88rem; font-weight:600;
+    display:flex; justify-content:space-between; align-items:center; color:var(--ink); min-height:44px;
+  }
+  .acc-btn .chev{transition:transform .25s ease; color:var(--ink-faint); font-size:.8rem;}
+  .acc.open .acc-btn .chev{transform:rotate(90deg);}
+  .acc-panel{max-height:0; overflow:hidden; transition:max-height .3s ease;}
+  .acc-panel-inner{padding:0 14px 14px; font-size:.85rem; color:var(--ink-soft);}
+  .acc-panel-inner pre{
+    background:var(--bg-alt); padding:12px; border-radius:8px; overflow-x:auto; font-size:.78rem;
+    font-family:'IBM Plex Mono'; line-height:1.5; color:var(--ink);
+  }
+
+  /* ---------- ANIMATION PANELS ---------- */
+  .anim-card{
+    border:1px solid var(--card-border); border-radius:var(--radius); background:var(--card); padding:16px;
+    margin:16px 0; box-shadow:var(--shadow);
+  }
+  .anim-caption{font-size:.8rem; font-weight:700; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em; margin-bottom:2px;}
+  .anim-title{font-family:'Space Grotesk'; font-size:1rem; margin-bottom:10px;}
+  .legend-line{font-size:.74rem; color:var(--ink-faint); margin-bottom:10px; line-height:1.5;}
+  .legend-line b{color:inherit;}
+  .stage{
+    background:var(--bg-alt); border-radius:var(--radius-sm); min-height:190px; position:relative; overflow:hidden;
+    display:flex; align-items:center; justify-content:center; padding:14px; border:1px solid var(--card-border);
+  }
+  .anim-explain{font-size:.85rem; color:var(--ink-soft); margin-top:10px; min-height:2.6em;}
+  .anim-controls{display:flex; align-items:center; gap:8px; margin-top:12px; flex-wrap:wrap;}
+  .btn{
+    border:1px solid var(--card-border); background:var(--bg-alt); color:var(--ink); border-radius:9px;
+    padding:9px 13px; font-size:.82rem; font-weight:600; min-height:40px; display:flex; align-items:center; gap:5px;
+  }
+  .btn.primary{background:var(--pointer); color:#fff; border-color:var(--pointer);}
+  .speedwrap{display:flex; align-items:center; gap:6px; font-size:.74rem; color:var(--ink-faint); margin-left:auto;}
+  input[type=range]{accent-color:var(--pointer); width:70px;}
+  .step-indicator{font-size:.72rem; color:var(--ink-faint); font-family:'IBM Plex Mono'; margin-top:8px;}
+
+  /* timeline anim */
+  .tl-track{display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;}
+  .tl-dot{flex:1; min-width:18px; height:5px; border-radius:3px; background:var(--card-border); transition:background .3s;}
+  .tl-dot.done{background:var(--pointer);}
+  .tl-stage-icon{font-size:2.6rem; margin-bottom:6px;}
+  .tl-stage-name{font-family:'Space Grotesk'; font-weight:700; font-size:.95rem;}
+  .tl-stage-years{font-size:.72rem; color:var(--ink-faint); font-family:'IBM Plex Mono'; margin-top:2px;}
+  .term-window{position:relative; background:#0d1117; color:#3ee87f; font-family:'IBM Plex Mono'; font-size:.75rem;
+    padding:12px; border-radius:8px; width:100%; max-width:230px; text-align:left;}
+  .term-cursor{display:inline-block; width:6px; height:12px; background:#3ee87f; animation:blink 1s step-end infinite; vertical-align:middle;}
+  @keyframes blink{50%{opacity:0;}}
+
+  /* WIMP anim */
+  .wimp-stage{width:100%; max-width:280px; height:180px; position:relative; background:var(--card); border-radius:8px; border:1px solid var(--card-border); overflow:hidden;}
+  .w-titlebar{height:18px; background:var(--card-border); display:flex; align-items:center; gap:3px; padding:0 6px;}
+  .w-titlebar span{width:6px; height:6px; border-radius:50%; background:var(--ink-faint);}
+  .w-body{position:absolute; inset:18px 0 0 0; padding:8px;}
+  .w-menubar{font-size:.62rem; color:var(--ink-faint); display:flex; gap:8px; margin-bottom:6px;}
+  .w-icons-row{display:flex; gap:8px;}
+  .w-icon-mini{width:26px; height:26px; background:var(--bg-alt); border-radius:5px; font-size:.8rem; display:flex; align-items:center; justify-content:center;}
+  .w-pointer-mini{position:absolute; font-size:1rem; transition:all .5s ease;}
+  .wimp-highlight{outline:3px solid transparent; outline-offset:2px; border-radius:6px; transition:outline-color .3s;}
+
+  /* eval stepper */
+  .eval-metrics{display:grid; grid-template-columns:1fr 1fr; gap:8px; width:100%;}
+  .eval-metric{background:var(--card); border:1px solid var(--card-border); border-radius:8px; padding:8px; font-size:.68rem;}
+  .eval-metric .m-label{color:var(--ink-faint); margin-bottom:4px;}
+  .eval-metric .bar-track{height:6px; background:var(--bg); border-radius:4px; overflow:hidden; margin-top:4px;}
+  .eval-metric .bar-fill{height:100%; width:0%; background:var(--pointer); border-radius:4px; transition:width .8s ease;}
+  .eval-metric .m-val{font-family:'IBM Plex Mono'; font-weight:600; font-size:.72rem; margin-top:3px;}
+  .eval-text{width:100%; text-align:left; font-size:.78rem;}
+  .eval-text ul{margin:6px 0 0; padding-left:1.1em;}
+  .eval-text li{margin-bottom:3px;}
+
+  /* ---------- GLOSSARY ---------- */
+  .glossary-grid{display:flex; flex-direction:column; gap:8px;}
+  .gterm{background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius-sm); padding:11px 13px;}
+  .gterm dt{font-family:'Space Grotesk'; font-weight:700; font-size:.88rem; color:var(--window); margin-bottom:3px;}
+  .gterm dd{margin:0; font-size:.83rem; color:var(--ink-soft);}
+
+  /* ---------- EXAM QUESTIONS ---------- */
+  .exam-q{background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:16px; margin-bottom:14px; box-shadow:var(--shadow);}
+  .exam-tag{
+    display:inline-block; font-size:.66rem; font-weight:700; letter-spacing:.03em; text-transform:uppercase;
+    background:var(--menu-soft); color:var(--menu); padding:3px 8px; border-radius:6px; margin-bottom:8px;
+  }
+  .exam-tag.likely{background:var(--pointer-soft); color:var(--pointer);}
+  .exam-q h4{font-size:.95rem; margin-bottom:8px;}
+  .exam-q .marks{color:var(--ink-faint); font-size:.72rem; font-weight:600;}
+  .exam-q .xref{
+    display:inline-block; margin-top:10px; font-size:.74rem; color:var(--window); font-weight:600;
+    background:var(--window-soft); padding:4px 9px; border-radius:20px; text-decoration:none;
+  }
+  .exam-q .answer{font-size:.87rem; margin-top:6px;}
+  .exam-q .answer p{margin-bottom:.6em;}
+
+  /* ---------- MISC ---------- */
+  .section-title-lg{font-size:1.5rem; margin:8px 0 4px;}
+  .section-sub{color:var(--ink-soft); font-size:.9rem; margin-bottom:18px;}
+  .divider{height:1px; background:var(--card-border); margin:44px 0;}
+  .close-line{
+    text-align:center; padding:30px 18px 50px; color:var(--ink-soft); font-size:.92rem;
+  }
+  .close-line .big{font-family:'Space Grotesk'; font-weight:700; font-size:1.1rem; color:var(--ink); margin-bottom:8px;}
+  .footer-final{text-align:center; font-size:.74rem; color:var(--ink-faint); padding-bottom:30px;}
+
+  @media(min-width:640px){
+    .hero h1{font-size:2.3rem;}
+    main{padding-top:34px;}
+    .wimp-legend{grid-template-columns:repeat(4,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <span class="course-chip">CSC 414</span>
+    <div class="navlinks">
+      <a href="#t1">Intro</a>
+      <a href="#t2">UI</a>
+      <a href="#t3">History</a>
+      <a href="#t4">GUI &amp; WIMP</a>
+      <a href="#t5">GUI vs Web</a>
+      <a href="#t6">Components</a>
+      <a href="#t7">Principles</a>
+      <a href="#t8">Toolkits</a>
+      <a href="#t9">Evaluation</a>
+      <a href="#glossary">Glossary</a>
+      <a href="#likely">Exam Qs</a>
+    </div>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-eyebrow">APEXHUB · Session 2025/2026 · Department of Computer Science</div>
+  <h1>Human&#8209;Computer Interaction</h1>
+  <p class="sub">A plain-English study companion with interactive visualisations — for the humans who have to sit an exam about how humans use computers.</p>
+  <div class="covers">
+    <span>What is HCI</span><span>User Interfaces</span><span>History of UI Design</span><span>GUI &amp; WIMP</span>
+    <span>GUI vs Web UI</span><span>GUI Components</span><span>Design Principles</span><span>GUI Toolkits</span><span>Design Evaluation</span>
+  </div>
+
+  <div class="wimp-legend">
+    <div class="wimp-chip" style="border-color:color-mix(in srgb, var(--window) 40%, transparent)"><div class="dot" style="background:var(--window)"></div><div class="lbl">W · Windows</div><div class="sub2">structure</div></div>
+    <div class="wimp-chip" style="border-color:color-mix(in srgb, var(--icon) 40%, transparent)"><div class="dot" style="background:var(--icon)"></div><div class="lbl">I · Icons</div><div class="sub2">examples</div></div>
+    <div class="wimp-chip" style="border-color:color-mix(in srgb, var(--menu) 40%, transparent)"><div class="dot" style="background:var(--menu)"></div><div class="lbl">M · Menus</div><div class="sub2">definitions</div></div>
+    <div class="wimp-chip" style="border-color:color-mix(in srgb, var(--pointer) 40%, transparent)"><div class="dot" style="background:var(--pointer)"></div><div class="lbl">P · Pointer</div><div class="sub2">analogies</div></div>
+  </div>
+
+  <div class="hero-cursor-demo">
+    <div class="hc-caption">🖱️ Tap play — this is what CampusChef got wrong. Every icon here does exactly what it says.</div>
+    <div id="heroCursor">🖱️</div>
+    <div class="hc-row" id="heroIconRow">
+      <div class="hc-icon" data-i="0">🍜</div>
+      <div class="hc-icon" data-i="1">🔍</div>
+      <div class="hc-icon" data-i="2">⭐</div>
+      <div class="hc-icon" data-i="3">🛒</div>
+    </div>
+    <div class="anim-controls" style="margin-top:14px;">
+      <button class="btn primary" id="heroPlay">▶ Play</button>
+    </div>
+  </div>
+
+  <div class="footer-line">APEXHUB &nbsp;·&nbsp; Session 2025/2026 &nbsp;·&nbsp; Department of Computer Science</div>
+</header>
+
+<div class="howto">
+  <div class="howto-box">
+    <h3>📖 How to use this guide</h3>
+    <ul>
+      <li>Tap any <b>subsection</b> or <b>▼ click to expand</b> block to open it — nothing is hidden forever.</li>
+      <li>Hit <b>▶ Play</b> on any animation to watch it step through on its own, or use <b>⏭ Step</b> to move at your own pace.</li>
+      <li>Callout colours match the WIMP legend above: 🪟 blue = structure/formal definitions, 🟠 amber = real-life examples, 🟣 violet = plain-English analogies.</li>
+      <li>Scroll to the bottom for the <b>Likely Exam Questions</b> section with full model answers.</li>
+      <li>Tap the 🌙 icon top-right to switch between light and dark mode.</li>
+    </ul>
+  </div>
+</div>
+
+<main>
+
+<!-- ============ TOPIC 1 ============ -->
+<section class="topic" id="t1">
+  <div class="topic-head">
+    <div class="badge-num">1</div>
+    <div>
+      <h2>Introduction to HCI</h2>
+      <div class="desc">What Human-Computer Interaction actually is, why it exists, and what "good usability" means in practice.</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">1.1</span> Why HCI exists — the CampusChef problem</h3>
+    <p>Imagine a student builds an app called CampusChef to connect hungry students with other students cooking meals on campus. The idea is great. But the homepage is cluttered with five competing buttons, there's no obvious "Order Now," tapping "Find Food" opens a blank screen, and the back button freezes the app. Within five minutes, the user deletes it.</p>
+    <p>Nothing here is a coding bug — the servers work fine. The failure is in how the human experiences the system. That gap between "the software technically works" and "a person can actually use it without wanting to throw their phone" is exactly what HCI studies.</p>
+    <div class="callout co-formal">
+      <div class="co-title">🪟 Formal Definition</div>
+      Human-Computer Interaction (HCI) is the study, planning, and design of how people interact with computers — the interaction between end-users and computers. It is interdisciplinary, drawing on Computer Science, Psychology, Design, Cognitive Science, Ergonomics, Linguistics, and Artificial Intelligence.
+    </div>
+    <div class="callout co-plain">
+      <div class="co-title">🟣 Plain English</div>
+      Think of HCI as the discipline that makes sure the "handshake" between a person and a machine doesn't feel awkward. It's the difference between a recipe that just lists ingredients and one that also tells you when to add them and what it should look like at each step.
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">1.2</span> Goals of HCI: Usability and UX</h3>
+    <p>The primary goal of HCI is to improve <b>usability</b> and <b>user experience (UX)</b>. These are related but not identical:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Concept</th><th>What it measures</th></tr></thead>
+        <tbody>
+          <tr><td>Usability</td><td>How easy and effective it is for users to interact with a system — can they actually get things done?</td></tr>
+          <tr><td>User Experience (UX)</td><td>Goes further than usability — how users <i>feel</i> while using the system: satisfaction, comfort, emotional response.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout co-real">
+      <div class="co-title">🟠 Real-Life Example</div>
+      A food-ordering app can have perfect usability (every button works, checkout is fast) but poor UX if the confirmation screen is cold and confusing, leaving the user unsure whether the order actually went through.
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">1.3</span> Six qualities of good usability</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Quality</th><th>Meaning</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Easy to learn</td><td>First-time users figure it out quickly</td><td>A food app that guides new users step by step</td></tr>
+          <tr><td>Easy to remember</td><td>Returning users don't need to relearn it</td><td>The "Submit" button is still where you expect after a month away</td></tr>
+          <tr><td>Effective</td><td>Users accomplish their goals accurately</td><td>Booking a flight without errors</td></tr>
+          <tr><td>Efficient</td><td>Tasks finish quickly, with minimal effort</td><td>Autofill and shortcut keys</td></tr>
+          <tr><td>Safe</td><td>Prevents serious errors and allows recovery</td><td>"Are you sure you want to delete?" prompts</td></tr>
+          <tr><td>Enjoyable</td><td>The experience feels pleasant, not stressful</td><td>Friendly copy, good visual feedback</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout co-tip">
+      <div class="co-title">🟠 Exam Tip</div>
+      Examiners love asking you to distinguish Usability from UX, or to define HCI and list its interdisciplinary fields. Be ready to name at least four of: Computer Science, Psychology, Design, Cognitive Science, Ergonomics, Linguistics, AI.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOPIC 2 ============ -->
+<section class="topic" id="t2">
+  <div class="topic-head">
+    <div class="badge-num">2</div>
+    <div>
+      <h2>The User Interface</h2>
+      <div class="desc">What a UI is, how it engages human senses, and why it matters so much to a system's success.</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">2.1</span> What is a User Interface?</h3>
+    <p>User interface design is a subset of HCI. The user interface (UI) is the part of a computer system and its software that users actually interact with. It works through human senses:</p>
+    <ul style="font-size:.95rem; color:var(--ink); padding-left:1.2em;">
+      <li><b>Sight</b> — visual elements: text, icons, colour, layout.</li>
+      <li><b>Touch</b> — physical interaction through mouse, keyboard, touchscreen, gestures.</li>
+      <li><b>Hearing</b> — audio feedback, alerts, voice responses.</li>
+      <li><b>Speaking</b> — modern systems also accept voice commands as input.</li>
+    </ul>
+    <div class="callout co-formal">
+      <div class="co-title">🪟 Formal Definition</div>
+      A UI has two components: <b>Input</b> — how a person communicates their needs to the computer — and <b>Output</b> — how the computer conveys its results back to the user.
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">2.2</span> Why the interface matters so much</h3>
+    <p>A well-designed UI isn't cosmetic — it directly drives the business:</p>
+    <ol style="font-size:.95rem; color:var(--ink); padding-left:1.2em;">
+      <li><b>The user's window into the system</b> — it's how people view and access everything the system can do.</li>
+      <li><b>The medium for critical tasks</b> — most business-critical operations happen through it.</li>
+      <li><b>Shapes perception</b> — a professional interface builds trust; a poor one makes a powerful system look unreliable.</li>
+      <li><b>Affects efficiency &amp; accuracy</b> — confusing layouts cause mistakes and wasted time.</li>
+      <li><b>Determines retention</b> — bad interfaces drive users to competitors permanently.</li>
+      <li><b>Affects emotion &amp; stress</b> — a clean interface lowers cognitive load and stress.</li>
+    </ol>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">2.3</span> Benefits of good design</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Benefit</th><th>Explanation</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Clarity</td><td>Easy to read, interpret, understand</td><td>Google's homepage — minimal, no distractions</td></tr>
+          <tr><td>Satisfaction</td><td>Reduces stress, increases positive emotion</td><td>Spotify feels enjoyable to navigate</td></tr>
+          <tr><td>Productivity</td><td>Tasks done faster, fewer errors</td><td>Excel's ribbon speeds up data entry</td></tr>
+          <tr><td>Lower costs</td><td>Less training, fewer support calls</td><td>New staff pick up Canva with minimal training</td></tr>
+          <tr><td>Trust &amp; retention</td><td>Users return to systems that feel reliable</td><td>Amazon's smooth checkout drives repeat purchases</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout co-plain">
+      <div class="co-title">🟣 Plain English</div>
+      A UI is like the front desk of a hotel. The building (the backend code) might be five-star, but if the receptionist is confusing or rude, that's the entire experience the guest remembers.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOPIC 3 ============ -->
+<section class="topic" id="t3">
+  <div class="topic-head">
+    <div class="badge-num">3</div>
+    <div>
+      <h2>History &amp; Evolution of Interface Design</h2>
+      <div class="desc">How interfaces moved from typed commands to voice, gesture, and multimodal experiences.</div>
+    </div>
+  </div>
+
+  <div class="anim-card">
+    <div class="anim-caption">Live Demo</div>
+    <div class="anim-title">The Evolution of the User Interface</div>
+    <div class="legend-line">Step through five eras. <b>Purple bar</b> = progress through history.</div>
+    <div class="tl-track" id="tlTrack"></div>
+    <div class="stage" id="tlStage"></div>
+    <div class="anim-explain" id="tlExplain"></div>
+    <div class="anim-controls">
+      <button class="btn primary" id="tlPlay">▶ Play</button>
+      <button class="btn" id="tlStep">⏭ Step</button>
+      <button class="btn" id="tlReset">↺ Reset</button>
+      <div class="speedwrap">Speed <input type="range" id="tlSpeed" min="1" max="3" value="2"></div>
+    </div>
+    <div class="step-indicator" id="tlIndicator"></div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">3.1</span> Command-Line Interfaces (CLIs)</h3>
+    <p>The earliest interfaces were purely text-based. Users had to memorise exact commands and type them precisely, with no visual indication of what was being deleted or whether it could be recovered — screens were often cluttered with cryptic symbols and poor labelling. Examples: MS-DOS, the Unix shell.</p>
+    <div class="callout co-real">
+      <div class="co-title">🟠 Real-Life Example</div>
+      Deleting a file with <code>rm -rf</code> in Unix gives no visual confirmation and no undo — compare that to dragging a file into a trash bin.
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">3.2</span> Direct manipulation through GUIs (1980s)</h3>
+    <p>Graphical User Interfaces emerged with the Xerox Star, Apple Lisa, and later the Macintosh, introducing windows, icons, menus, and pointers (WIMP). Benefits: reduced memory load (no commands to remember), immediate visual feedback, and easier learning for non-technical users.</p>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">3.3</span> Web-based interfaces (mid-1990s–present)</h3>
+    <p>The rise of the internet created a need for browser-based interaction. Web UIs became the default for email, shopping, and search, built on HTML, CSS, and JavaScript. Design emphasis shifted from desktop metaphors toward hyperlinks, forms, scrollable content, and responsive layouts.</p>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">3.4</span> Mobile &amp; touch interfaces (2007–present)</h3>
+    <p>Smartphones and tablets replaced mouse actions with touch gestures — tap, swipe, pinch — and pushed design toward minimalism, flat design, and responsiveness.</p>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">3.5</span> Modern interfaces (2015 onward)</h3>
+    <p>Voice interfaces (Siri, Alexa), Augmented and Virtual Reality, conversational chatbots, and multimodal interfaces (voice + touch + vision) working together.</p>
+    <div class="callout co-tip">
+      <div class="co-title">🟠 Exam Tip</div>
+      A classic question is "trace the evolution of UI design" — you need the five eras in order with at least one defining feature and one example each. The Play button above literally rehearses this answer for you.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOPIC 4 ============ -->
+<section class="topic" id="t4">
+  <div class="topic-head">
+    <div class="badge-num">4</div>
+    <div>
+      <h2>Graphical User Interface (GUI) &amp; the WIMP Model</h2>
+      <div class="desc">How GUIs use visual metaphors, and the four building blocks — Windows, Icons, Menus, Pointer — that structure them.</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">4.1</span> What is a GUI?</h3>
+    <p>A Graphical User Interface allows users to interact with digital devices using graphical elements — windows, icons, buttons, menus — instead of relying solely on text commands. GUI is the foundation of modern interface design: nearly every interface since has built on it. Its purpose is to make interaction more intuitive and visual, reduce the need to memorise commands, and present functionality through visual metaphors.</p>
+    <div class="callout co-formal">
+      <div class="co-title">🪟 Formal Definition</div>
+      A <b>visual metaphor</b> is a design technique where real-world objects or concepts are represented visually in a digital interface — using familiar images or symbols to represent digital actions or features — so the interface is more intuitive and easier to learn (e.g. trash bin, folders, printer icon, scissors icon, battery bar).
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">4.2</span> Three types of visual metaphor</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>What it does</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Object-based</td><td>Uses real-world physical objects</td><td>Folder, Trash bin, Desktop</td></tr>
+          <tr><td>Action-based</td><td>Represents behaviours or operations</td><td>Drag-and-drop mimics physically moving a file</td></tr>
+          <tr><td>Environmental</td><td>Simulates a physical space or context</td><td>The desktop metaphor — icons arranged like items on a real desk</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">4.3</span> The WIMP Model</h3>
+    <p>WIMP is the architectural blueprint for how users interact with GUI systems — the basic building blocks of any graphical interface.</p>
+
+    <div class="anim-card">
+      <div class="anim-caption">Live Demo</div>
+      <div class="anim-title">Tap through the WIMP model</div>
+      <div class="legend-line">🪟 <b style="color:var(--window)">blue</b> = Window &nbsp; 🟠 <b style="color:var(--icon)">amber</b> = Icon &nbsp; 🔴 <b style="color:var(--menu)">coral</b> = Menu &nbsp; 🟣 <b style="color:var(--pointer)">violet</b> = Pointer</div>
+      <div class="stage">
+        <div class="wimp-stage" id="wimpStage">
+          <div class="w-titlebar"><span></span><span></span><span></span></div>
+          <div class="w-body">
+            <div class="w-menubar" id="wimpMenu">File &nbsp; Edit &nbsp; View</div>
+            <div class="w-icons-row" id="wimpIcons">
+              <div class="w-icon-mini">📁</div><div class="w-icon-mini">🗑️</div><div class="w-icon-mini">🖨️</div>
+            </div>
+          </div>
+          <div class="w-pointer-mini" id="wimpPointer" style="left:70%; top:60%;">🖱️</div>
+        </div>
+      </div>
+      <div class="anim-explain" id="wimpExplain">Tap Step to highlight each WIMP element in turn.</div>
+      <div class="anim-controls">
+        <button class="btn primary" id="wimpPlay">▶ Play</button>
+        <button class="btn" id="wimpStep">⏭ Step</button>
+        <button class="btn" id="wimpReset">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Element</th><th>Description</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>W – Windows</td><td>Independent viewing areas for apps or content</td><td>Two Word documents open side by side</td></tr>
+          <tr><td>I – Icons</td><td>Small visual symbols for apps, files or functions</td><td>Trash can icon to delete files</td></tr>
+          <tr><td>M – Menus</td><td>Organised lists of commands or options</td><td>File → Save As in MS Word</td></tr>
+          <tr><td>P – Pointer</td><td>Movable on-screen cursor</td><td>Clicking buttons with a mouse or finger</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">4.4</span> Visual presentation &amp; feedback</h3>
+    <p>GUI design relies on colour, contrast, fonts, alignment, spacing, and visual hierarchy. Components like buttons, sliders, drop-downs, and tabs help users act. Feedback is essential — a button should visibly change when hovered or clicked, so the user knows something happened.</p>
+    <div class="callout co-real">
+      <div class="co-title">🟠 Real-Life Example</div>
+      Clicking "Submit" changes the button's colour to show the form is processing — without that, users often click it five more times.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOPIC 5 ============ -->
+<section class="topic" id="t5">
+  <div class="topic-head">
+    <div class="badge-num">5</div>
+    <div>
+      <h2>GUI vs. Web UI</h2>
+      <div class="desc">Comparing desktop-style graphical interfaces with browser-based interfaces, and the extra challenges the web introduces.</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">5.1</span> Key differences</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Feature</th><th>GUI (Desktop)</th><th>Web UI (Browser)</th></tr></thead>
+        <tbody>
+          <tr><td>Platform</td><td>Local applications, e.g. Photoshop</td><td>Accessed via browser, e.g. Google Docs</td></tr>
+          <tr><td>Performance</td><td>Fast, uses system resources</td><td>Depends on internet speed and server response</td></tr>
+          <tr><td>Interaction style</td><td>Tool-focused, deep menus and controls</td><td>Navigation-focused, hyperlink-driven</td></tr>
+          <tr><td>Customisation</td><td>Can be personalised for the user</td><td>Limited by HTML/CSS and browser constraints</td></tr>
+          <tr><td>Examples</td><td>MS Excel, Photoshop</td><td>Amazon, Gmail, Coursera</td></tr>
+          <tr class="analogy-row"><td>Real-life analogy</td><td>A fully-equipped home kitchen</td><td>A well-run restaurant — less customisable, more accessible</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>In short: GUI is typically more feature-rich and suited to complex tasks, while Web UI is more accessible and suited to content interaction or services.</p>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">5.2</span> Growth &amp; importance of Web UI</h3>
+    <p>With the rise of the internet, most user interaction is now web-based. Web UIs must support desktops, tablets, and smartphones alike — good design ensures accessibility, responsiveness, and efficiency.</p>
+    <div class="callout co-real">
+      <div class="co-title">🟠 Real-Life Example</div>
+      A travel site like Booking.com must let users filter, compare, and book rooms cleanly on any device.
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">5.3</span> Challenges of Web UI</h3>
+    <ul style="font-size:.95rem; color:var(--ink); padding-left:1.2em;">
+      <li><b>Device variability</b> — different screen sizes, touch vs mouse.</li>
+      <li><b>Slow networks</b> — loading time directly affects usability.</li>
+      <li><b>Security &amp; privacy</b> — authentication, cookies.</li>
+      <li><b>Inconsistent behaviour</b> — a site may look fine on Chrome but break on an older browser due to browser-specific features.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ TOPIC 6 ============ -->
+<section class="topic" id="t6">
+  <div class="topic-head">
+    <div class="badge-num">6</div>
+    <div>
+      <h2>GUI Components</h2>
+      <div class="desc">The interactive tools and controls that live inside the WIMP environment — grouped by what job they do.</div>
+    </div>
+  </div>
+  <p>GUI components are what users actually see and touch to enter data, move around, receive feedback, or trigger actions. They're built into windows, triggered from menus, identified by icons, and manipulated with a pointer.</p>
+
+  <div class="acc">
+    <button class="acc-btn">1. Input Controls — entering data or making selections <span class="chev">▶</span></button>
+    <div class="acc-panel"><div class="acc-panel-inner">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Element</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Text box</td><td>Enter short text</td><td>Typing username/email in a login form</td></tr>
+          <tr><td>Password field</td><td>Masked text input</td><td>••••••• field in a bank login</td></tr>
+          <tr><td>Radio button</td><td>Select one option from a group</td><td>Choosing gender: Male / Female / Other</td></tr>
+          <tr><td>Checkbox</td><td>Select multiple options</td><td>✔ News ✔ Events ✔ Offers</td></tr>
+          <tr><td>Dropdown menu</td><td>Choose from a predefined list</td><td>Selecting a country during signup</td></tr>
+          <tr><td>Date picker</td><td>Pick a calendar date</td><td>Choosing a birthdate or flight date</td></tr>
+          <tr><td>Slider</td><td>Select a value from a range</td><td>Adjusting volume or brightness</td></tr>
+          <tr><td>Spinner</td><td>Increase/decrease a numeric value</td><td>Setting quantity on a shopping app</td></tr>
+          <tr><td>File upload</td><td>Upload a file from the device</td><td>Attaching a document to a job application</td></tr>
+        </tbody>
+      </table></div>
+    </div></div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn">2. Navigation Controls — moving through the interface <span class="chev">▶</span></button>
+    <div class="acc-panel"><div class="acc-panel-inner">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Element</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Menu bar</td><td>Display app options</td><td>File, Edit, View in MS Word</td></tr>
+          <tr><td>Navigation tabs</td><td>Switch between sections</td><td>Home, Explore, Profile tabs</td></tr>
+          <tr><td>Breadcrumbs</td><td>Show path/location</td><td>Home &gt; Products &gt; Electronics &gt; Phones</td></tr>
+          <tr><td>Search bar</td><td>Locate items or information</td><td>Google's search box</td></tr>
+          <tr><td>Pagination</td><td>Navigate through pages</td><td>1 2 3 … 10 Next → on shopping results</td></tr>
+          <tr><td>Toolbar</td><td>Quick access to key functions</td><td>Bold, Italic, Underline in a text editor</td></tr>
+          <tr><td>Sidebar/Drawer</td><td>Secondary navigation</td><td>Collapsible menu on the left of Gmail</td></tr>
+          <tr><td>Back/Forward</td><td>Revisit previous views</td><td>Browser navigation arrows</td></tr>
+        </tbody>
+      </table></div>
+    </div></div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn">3. Output Displays — presenting data or feedback <span class="chev">▶</span></button>
+    <div class="acc-panel"><div class="acc-panel-inner">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Element</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Label</td><td>Display static, non-editable text</td><td>"Username:" beside a text box</td></tr>
+          <tr><td>Tooltip</td><td>Show brief help on hover</td><td>Hovering a button shows "Click to submit"</td></tr>
+          <tr><td>Status bar</td><td>Show system state</td><td>"Saving…" or "Ready" in an editor</td></tr>
+          <tr><td>Progress bar</td><td>Show task progress</td><td>File upload progress on Google Drive</td></tr>
+          <tr><td>Notification</td><td>Inform of success, error, warning</td><td>"Form submitted successfully"</td></tr>
+          <tr><td>Modal dialog</td><td>Message requiring user action</td><td>"Are you sure you want to delete this file?"</td></tr>
+        </tbody>
+      </table></div>
+    </div></div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn">4. Action Controls — triggering commands <span class="chev">▶</span></button>
+    <div class="acc-panel"><div class="acc-panel-inner">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Element</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Button</td><td>Trigger submit/cancel/save</td><td>"Login", "Buy Now", "Submit"</td></tr>
+          <tr><td>Icon button</td><td>Compact action represented by an icon</td><td>Delete, edit, search icons</td></tr>
+          <tr><td>Link</td><td>Navigate to another page</td><td>"Forgot password?"</td></tr>
+          <tr><td>Toggle switch</td><td>Turn settings on/off</td><td>Wi-Fi On/Off in phone settings</td></tr>
+        </tbody>
+      </table></div>
+    </div></div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn">5. Containers &amp; Layout — organising content <span class="chev">▶</span></button>
+    <div class="acc-panel"><div class="acc-panel-inner">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Element</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Panel</td><td>Group related elements</td><td>Login panel with username &amp; password</td></tr>
+          <tr><td>Card</td><td>Compact block of related content</td><td>Product cards on Amazon</td></tr>
+          <tr><td>Accordion</td><td>Expandable sections</td><td>FAQs — click a question to reveal the answer</td></tr>
+          <tr><td>Tabs</td><td>Organise multiple views in one space</td><td>Profile tab: Overview, Posts, Photos</td></tr>
+          <tr><td>Grid/List view</td><td>Display items in grid or list format</td><td>Instagram (grid) vs Gmail (list)</td></tr>
+        </tbody>
+      </table></div>
+    </div></div>
+  </div>
+
+  <div class="acc">
+    <button class="acc-btn">6. Media Controls — for audio/video content <span class="chev">▶</span></button>
+    <div class="acc-panel"><div class="acc-panel-inner">
+      <div class="tbl-wrap"><table>
+        <thead><tr><th>Element</th><th>Purpose</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Play/Pause</td><td>Control audio/video</td><td>YouTube or music player controls</td></tr>
+          <tr><td>Volume slider</td><td>Adjust sound levels</td><td>Speaker/headphone controls</td></tr>
+          <tr><td>Fullscreen toggle</td><td>Expand/shrink video</td><td>Watching a movie fullscreen</td></tr>
+          <tr><td>Progress scrubber</td><td>Seek to a specific time</td><td>Dragging a podcast timeline</td></tr>
+        </tbody>
+      </table></div>
+    </div></div>
+  </div>
+
+  <div class="callout co-plain">
+    <div class="co-title">🟣 Plain English</div>
+    Think of these six categories like a restaurant: input controls are how you order, navigation is how you move around the menu, output displays are how the waiter updates you, action controls are how you actually confirm the order, containers are how the menu is organised into sections, and media controls are the music playing in the background.
+  </div>
+</section>
+
+<!-- ============ TOPIC 7 ============ -->
+<section class="topic" id="t7">
+  <div class="topic-head">
+    <div class="badge-num">7</div>
+    <div>
+      <h2>Principles of User Interface Design</h2>
+      <div class="desc">The guiding rules that make interfaces usable and consistent — general principles, the Xerox Star principles, and Shneiderman's Eight Golden Rules.</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">7.1</span> Why design principles are needed</h3>
+    <p>Design principles are guidelines that help designers build systems that are usable and consistent. They exist to:</p>
+    <ul style="font-size:.95rem; color:var(--ink); padding-left:1.2em;">
+      <li><b>Guide consistency</b> — buttons, menus, and icons behave the same way everywhere.</li>
+      <li><b>Reduce user errors</b> — disabling unavailable options, clear error messages, confirming destructive actions.</li>
+      <li><b>Improve learnability &amp; efficiency</b> — clear instructions, recognisable icons, logical grouping.</li>
+      <li><b>Provide a framework for evaluation</b> — checkpoints during prototyping, testing, and critique.</li>
+      <li><b>Support user-centred design</b> — keeping focus on user needs, accessibility, and context of use.</li>
+    </ul>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">7.2</span> General principles</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Principle</th><th>Explanation</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Aesthetics</td><td>Good visual layout, colour, spacing</td><td>Clean spacing in Apple interfaces</td></tr>
+          <tr><td>Clarity</td><td>Avoid ambiguity in functions and labels</td><td>Use "Save" instead of "Record"</td></tr>
+          <tr><td>Consistency</td><td>Uniform design across screens</td><td>Same button layout on every page</td></tr>
+          <tr><td>Control</td><td>Users feel in charge, not forced</td><td>Allow users to cancel an upload</td></tr>
+          <tr><td>Compatibility</td><td>Suits users' devices, culture, expectations</td><td>Right-to-left text for Arabic users</td></tr>
+          <tr><td>Flexibility</td><td>Multiple ways to do the same task</td><td>Copy via right-click or Ctrl+C</td></tr>
+          <tr><td>Transparency</td><td>Hide technical detail, focus on content</td><td>Auto-updates without showing complex logs</td></tr>
+          <tr><td>Recovery</td><td>Allow undo and error correction</td><td>Undo in Gmail, recycle bin for deleted files</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">7.3</span> Xerox Star design principles</h3>
+    <p>The Xerox Star was the first commercial GUI system, and its design team pioneered principles that still shape GUIs today.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Principle</th><th>Explanation</th><th>Where it shows up</th></tr></thead>
+        <tbody>
+          <tr><td>Visible, manipulable objects</td><td>Users interact with icons and controls directly</td><td>Drag-and-drop files, toolbars</td></tr>
+          <tr><td>Uniformity &amp; consistency</td><td>Actions behave similarly system-wide</td><td>Same button styles and shortcuts everywhere</td></tr>
+          <tr><td>WYSIWYG</td><td>Screen reflects the final output accurately</td><td>Word processor print preview matches the printed page</td></tr>
+          <tr><td>Visual order</td><td>Layout, contrast, and grouping guide attention</td><td>Panels, cards, tabs arranged logically</td></tr>
+          <tr><td>Feedback &amp; dialogue</td><td>Clear system response to every action</td><td>Progress bars, status messages, error alerts</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">7.4</span> Shneiderman's Eight Golden Rules</h3>
+    <p>A widely tested checklist for evaluating interaction design.</p>
+    <div class="acc">
+      <button class="acc-btn">▼ click to expand all eight rules <span class="chev">▶</span></button>
+      <div class="acc-panel"><div class="acc-panel-inner">
+        <ol style="padding-left:1.1em; margin:0;">
+          <li style="margin-bottom:8px;"><b>Strive for consistency</b> — uniform behaviour throughout the system.</li>
+          <li style="margin-bottom:8px;"><b>Enable frequent users to use shortcuts</b> — accelerators like Ctrl+S improve speed.</li>
+          <li style="margin-bottom:8px;"><b>Offer informative feedback</b> — visual or audio response to every action.</li>
+          <li style="margin-bottom:8px;"><b>Design dialogs to yield closure</b> — let users know a task is complete, e.g. "Upload complete!"</li>
+          <li style="margin-bottom:8px;"><b>Prevent errors</b> — disable unavailable options, confirm destructive actions.</li>
+          <li style="margin-bottom:8px;"><b>Permit easy reversal of actions</b> — undo and redo buttons.</li>
+          <li style="margin-bottom:8px;"><b>Support internal locus of control</b> — users should feel in control of actions, not the system.</li>
+          <li><b>Reduce short-term memory load</b> — use dropdowns and visible options instead of requiring memorisation.</li>
+        </ol>
+      </div></div>
+    </div>
+    <div class="callout co-tip">
+      <div class="co-title">🟠 Exam Tip</div>
+      "List and explain Shneiderman's Eight Golden Rules" is a near-guaranteed question. Learn them in order — the numbering itself is often part of the marking scheme.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOPIC 8 ============ -->
+<section class="topic" id="t8">
+  <div class="topic-head">
+    <div class="badge-num">8</div>
+    <div>
+      <h2>GUI Toolkits</h2>
+      <div class="desc">The pre-built libraries developers use to construct interfaces instead of drawing every pixel by hand.</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">8.1</span> What is a GUI toolkit?</h3>
+    <p>A GUI toolkit is a collection of pre-built libraries or frameworks developers use to create visual interfaces — buttons, windows, sliders, menus, dialog boxes — without writing low-level drawing code for every element. Toolkits abstract that complexity into high-level building blocks.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Component</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Widgets/Controls</td><td>GUI elements like buttons, checkboxes, text fields, menus</td></tr>
+          <tr><td>Layout managers</td><td>Control how elements are arranged (grid, box, stack)</td></tr>
+          <tr><td>Event handling</td><td>Detect and respond to clicks, drags, keypresses</td></tr>
+          <tr><td>Rendering engine</td><td>Draws the interface elements on screen</td></tr>
+          <tr><td>Themes &amp; styling</td><td>Customise colours, fonts, sizes</td></tr>
+          <tr><td>Platform abstraction</td><td>Lets an app look and behave the same across OSes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">8.2</span> Popular GUI toolkits</h3>
+    <div class="acc">
+      <button class="acc-btn">▼ click to expand toolkit-by-toolkit notes <span class="chev">▶</span></button>
+      <div class="acc-panel"><div class="acc-panel-inner">
+        <p><b>Tkinter (Python)</b> — built-in with Python, simple, cross-platform. Use case: academic tools, internal apps, beginner projects.</p>
+        <p><b>Qt / PyQt / PySide (C++, Python)</b> — professional-grade, WYSIWYG design with Qt Designer, rich widgets, supports animation and multimedia. Use case: desktop apps, commercial and scientific software.</p>
+        <p><b>GTK (C, Python via PyGObject)</b> — used in GNOME-based Linux environments, high-performance native widgets. Use case: Linux-native, open-source projects.</p>
+        <p><b>JavaFX / Swing (Java)</b> — Swing is the older, mature toolkit; JavaFX is its modern replacement with 2D/3D and CSS styling. Use case: cross-platform enterprise apps, teaching tools.</p>
+        <p><b>Kivy (Python)</b> — designed for touch and mobile-first apps, lightweight, supports Android and iOS. Use case: mobile apps, touchscreens, Raspberry Pi.</p>
+        <p><b>Electron (JS, HTML, CSS)</b> — builds desktop apps with web technologies (Node.js backend, HTML/CSS frontend). Use case: apps like VS Code, Slack, Discord.</p>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">8.3</span> Toolkit comparison</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Toolkit</th><th>Language</th><th>Best for</th><th>Pros</th><th>Cons</th></tr></thead>
+        <tbody>
+          <tr><td>Tkinter</td><td>Python</td><td>Simplicity</td><td>Easy, built-in</td><td>Limited widgets</td></tr>
+          <tr><td>PyQt</td><td>Python/C++</td><td>Complex apps</td><td>Professional, powerful</td><td>Licensing (GPL/commercial)</td></tr>
+          <tr><td>GTK</td><td>C/Python</td><td>Linux apps</td><td>Fast, native look</td><td>Not beginner-friendly</td></tr>
+          <tr><td>JavaFX</td><td>Java</td><td>Enterprise apps</td><td>Modern UI, CSS support</td><td>Steeper learning curve</td></tr>
+          <tr><td>Electron</td><td>JS/HTML</td><td>Web-to-desktop</td><td>Huge developer community</td><td>Heavy resource usage</td></tr>
+          <tr><td>Kivy</td><td>Python</td><td>Mobile/touch apps</td><td>Multi-platform, touch-friendly</td><td>Less standard GUI feel</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">8.4</span> GUI toolkits &amp; HCI principles</h3>
+    <p>Toolkits are fundamental to HCI because they translate abstract user needs into tangible interactions, enforce usability heuristics through consistent components, and provide the tools for feedback, visibility, and affordance — plus rapid prototyping before full deployment.</p>
+    <div class="callout co-insight">
+      <div class="co-title">🔴 Key Insight</div>
+      Consistency, feedback, and error prevention — three HCI principles from Topic 7 — are realised concretely through toolkits: widgets behave the same across screens, buttons give visual feedback automatically, and toolkits can restrict input formats to prevent bad data entirely.
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOPIC 9 ============ -->
+<section class="topic" id="t9">
+  <div class="topic-head">
+    <div class="badge-num">9</div>
+    <div>
+      <h2>Design Evaluation in HCI</h2>
+      <div class="desc">How designers systematically check whether an interface actually works for real users — and a full worked case study.</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">9.1</span> What is design evaluation, and why do it?</h3>
+    <p>Design evaluation is the systematic assessment of an interface to determine how well it supports users, whether it meets usability standards, and what needs improving before or after deployment. It's done to catch usability problems early, measure satisfaction, ensure accessibility, validate design decisions with evidence, and save cost by reducing future rework.</p>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">9.2</span> Formative vs. Summative Evaluation</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Type</th><th>When</th><th>Goal</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Formative</td><td>During the design process</td><td>Improve the design as it evolves</td><td>Testing wireframes or paper prototypes with users</td></tr>
+          <tr><td>Summative</td><td>After development / at the final stage</td><td>Assess how the final product performs</td><td>Measuring task completion in the finished app</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout co-plain">
+      <div class="co-title">🟣 Plain English</div>
+      Formative evaluation is a chef tasting the soup while it's still cooking and adjusting the seasoning. Summative evaluation is the food critic tasting the finished dish and giving it a score.
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">9.3</span> Evaluation methods</h3>
+    <p>Methods split into two families: <b>Empirical</b> (real users interact with the system) and <b>Analytical</b> (experts assess it without users).</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Family</th><th>Method</th><th>What it involves</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="4">A. Empirical (user-based)</td><td>Usability testing</td><td>Users perform predefined tasks while observers record time, errors, satisfaction</td></tr>
+          <tr><td>Field studies</td><td>Observing users in their natural environment</td></tr>
+          <tr><td>Interviews &amp; questionnaires</td><td>Gathering subjective feedback, preferences, pain points</td></tr>
+          <tr><td>A/B testing</td><td>Users try two design versions; the better-performing one is selected</td></tr>
+          <tr><td rowspan="2">B. Analytical (expert-based)</td><td>Heuristic evaluation</td><td>Experts assess the interface against usability heuristics (e.g. Nielsen's 10 principles)</td></tr>
+          <tr><td>Cognitive walkthrough</td><td>Experts simulate a new user's step-by-step interaction to spot confusion points</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">9.4</span> Usability metrics</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Metric</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td>Effectiveness</td><td>Can users complete tasks correctly?</td></tr>
+          <tr><td>Efficiency</td><td>How quickly can users complete tasks?</td></tr>
+          <tr><td>Satisfaction</td><td>How pleasant is the experience?</td></tr>
+          <tr><td>Error rate</td><td>How often do users make mistakes?</td></tr>
+          <tr><td>Learnability</td><td>How easy is it to learn the system?</td></tr>
+          <tr><td>Retention</td><td>Can users still use it correctly after time away?</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">9.5</span> Worked case study: the AAUA Student Portal</h3>
+    <p>Adekunle Ajasin University (AAUA) built a new student portal for course registration and tuition payment. Before launch, the HCI team ran a full evaluation combining Formative + Summative and Empirical + Analytical methods. Step through what actually happened:</p>
+
+    <div class="anim-card">
+      <div class="anim-caption">Live Demo</div>
+      <div class="anim-title">AAUA Student Portal: Evaluation Walkthrough</div>
+      <div class="legend-line">Watch task completion, time-on-task, satisfaction and errors move from "before" to "after" as the redesign happens.</div>
+      <div class="stage" id="evalStage" style="min-height:220px; align-items:flex-start;"></div>
+      <div class="anim-explain" id="evalExplain"></div>
+      <div class="anim-controls">
+        <button class="btn primary" id="evalPlay">▶ Play</button>
+        <button class="btn" id="evalStep">⏭ Step</button>
+        <button class="btn" id="evalReset">↺ Reset</button>
+      </div>
+      <div class="step-indicator" id="evalIndicator"></div>
+    </div>
+
+    <div class="acc">
+      <button class="acc-btn">▼ Full write-up: findings &amp; impact at each stage <span class="chev">▶</span></button>
+      <div class="acc-panel"><div class="acc-panel-inner">
+        <p><b>Formative — paper prototype, 10 students:</b> testers couldn't easily find the "Register Course" button, navigation between sections lacked clarity, and unlabelled icons were unclear. This directly informed a redesign of layout, button placement, and visual labels.</p>
+        <p><b>Usability testing (empirical), 12 students:</b> some clicked wrong buttons due to unclear labels, "back to homepage" confused many, and some forms gave no confirmation after submission. Impact: labels redesigned, feedback added, menus reorganised.</p>
+        <p><b>Field studies:</b> in hostels/labs, students didn't scroll far enough to find action buttons, poor network caused repeated button presses, and screen overload made users ignore instructions. Impact: sticky buttons, loading animations, visual cues added.</p>
+        <p><b>Interviews &amp; questionnaires:</b> students liked the colours and layout but often "got lost" during registration and asked for step-by-step instructions. Impact: tooltips, page hints, and short instructions were added.</p>
+        <p><b>A/B testing:</b> "icons only" vs "icons with labels" — labelled icons won on both speed and user confidence, so labels were made permanent across the interface.</p>
+        <p><b>Heuristic evaluation (analytical), 3 experts, Nielsen's 10 heuristics:</b> found no loading feedback (visibility of system status), confusing "Programme Fees" wording (match with real world), inconsistent buttons (consistency), too many hidden functions (recognition over recall), and no help available. Directly guided feedback messages, consistent icon styles, and renamed terms.</p>
+        <p><b>Cognitive walkthrough:</b> experts simulated registration and result-checking, asking "will the user know what to do here?" — found the registration workflow had too many unclear steps and that "Add Course" wasn't visible enough. Simplified steps and highlighted call-to-action buttons followed.</p>
+        <p><b>Summative — revised portal, 10 new students:</b> confirmed the fixes worked (see metrics in the demo above).</p>
+      </div></div>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Issue identified</th><th>Improvement implemented</th></tr></thead>
+        <tbody>
+          <tr><td>"Programme Fees" unclear</td><td>Renamed to "School Fees"</td></tr>
+          <tr><td>No feedback after submitting forms</td><td>Added confirmation messages and loading spinners</td></tr>
+          <tr><td>Icons lacked meaning</td><td>Added text labels beside all icons</td></tr>
+          <tr><td>Deep menus, confusing layout</td><td>Simplified navigation, reduced options per page</td></tr>
+          <tr><td>No guidance for first-time users</td><td>Added tooltips, page hints, short instructions</td></tr>
+          <tr><td>No visible progress during registration</td><td>Introduced a progress bar for multi-step processes</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="num">9.6</span> Challenges &amp; best practices</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Challenges</th><th>Best practices</th></tr></thead>
+        <tbody>
+          <tr><td>Recruiting users representative of the target audience</td><td>Evaluate early and often in the design process</td></tr>
+          <tr><td>Bias in self-reported feedback</td><td>Combine multiple methods, e.g. usability testing + heuristic evaluation</td></tr>
+          <tr><td>Limited resources (time, cost, tools)</td><td>Document findings and act on them</td></tr>
+          <tr><td>Misinterpretation of results</td><td>Use realistic tasks and representative users, and focus on user goals and context</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============ GLOSSARY ============ -->
+<section class="topic" id="glossary">
+  <h2 class="section-title-lg">📚 Key Terms / Glossary</h2>
+  <p class="section-sub">Quick-reference definitions pulled straight from the notes.</p>
+  <dl class="glossary-grid">
+    <div class="gterm"><dt>HCI</dt><dd>The study, planning, and design of how people interact with computers; interdisciplinary across CS, psychology, design, cognitive science, ergonomics, linguistics, and AI.</dd></div>
+    <div class="gterm"><dt>Usability</dt><dd>How easy and effective it is for users to interact with a system.</dd></div>
+    <div class="gterm"><dt>User Experience (UX)</dt><dd>How users feel while using a system — satisfaction, comfort, emotional response.</dd></div>
+    <div class="gterm"><dt>User Interface (UI)</dt><dd>The part of a system users directly interact with, engaging sight, touch, hearing, and sometimes speech.</dd></div>
+    <div class="gterm"><dt>CLI</dt><dd>Command-Line Interface — a text-based interface requiring memorised, precisely typed commands.</dd></div>
+    <div class="gterm"><dt>GUI</dt><dd>Graphical User Interface — interaction via graphical elements like windows, icons, buttons, and menus.</dd></div>
+    <div class="gterm"><dt>WIMP</dt><dd>Windows, Icons, Menus, Pointer — the architectural blueprint for how users interact with GUI systems.</dd></div>
+    <div class="gterm"><dt>Visual Metaphor</dt><dd>A design technique representing real-world objects or concepts visually to make an interface intuitive, e.g. a trash bin icon.</dd></div>
+    <div class="gterm"><dt>GUI Toolkit</dt><dd>A collection of pre-built libraries/frameworks (widgets, layout managers, event handling) developers use to build interfaces.</dd></div>
+    <div class="gterm"><dt>Formative Evaluation</dt><dd>Evaluation carried out during the design process to improve the design as it evolves.</dd></div>
+    <div class="gterm"><dt>Summative Evaluation</dt><dd>Evaluation carried out after development to assess how well the final product performs.</dd></div>
+    <div class="gterm"><dt>Heuristic Evaluation</dt><dd>Experts assess an interface against usability heuristics such as Nielsen's 10 principles.</dd></div>
+    <div class="gterm"><dt>Cognitive Walkthrough</dt><dd>Experts simulate a new user's step-by-step interaction to identify likely confusion points.</dd></div>
+    <div class="gterm"><dt>A/B Testing</dt><dd>Users try two design versions; the better-performing version is selected.</dd></div>
+    <div class="gterm"><dt>Learnability</dt><dd>How easy a system is to learn for a first-time user.</dd></div>
+    <div class="gterm"><dt>Error Rate</dt><dd>How often users make mistakes while using a system.</dd></div>
+  </dl>
+</section>
+
+<div class="divider"></div>
+
+<!-- ============ LIKELY EXAM QUESTIONS ============ -->
+<section class="topic" id="likely">
+  <h2 class="section-title-lg">🔮 Likely Exam Questions</h2>
+  <p class="section-sub">No past paper was supplied with these notes, so these are predicted from the syllabus coverage above — the concepts most likely to be tested based on how much emphasis the notes give them and the format of the AAUA worked example. Each links back to the relevant topic.</p>
+
+  <div class="exam-q">
+    <span class="exam-tag likely">Likely · 2025/2026</span>
+    <h4>1. Define Human-Computer Interaction and explain why it is described as interdisciplinary.</h4>
+    <div class="answer">
+      <p>HCI is the study, planning, and design of how people interact with computers — the interaction between end-users and computer systems. It is interdisciplinary because no single field can address all the factors that make a system usable: Computer Science explains how the software and hardware work; Psychology explains how humans think, perceive, and remember; Design contributes attractive, usable layouts; Cognitive Science covers mental processes like attention; Ergonomics covers physical comfort and safety; Linguistics informs natural-language interfaces; and Artificial Intelligence powers intelligent software behaviour. Each field solves a different piece of the "can a human actually use this" puzzle.</p>
+    </div>
+    <a class="xref" href="#t1">📍 See Topic 1.1</a>
+  </div>
+
+  <div class="exam-q">
+    <span class="exam-tag likely">Likely · 2025/2026</span>
+    <h4>2. Distinguish between usability and user experience (UX), giving an example of each.</h4>
+    <div class="answer">
+      <p>Usability measures whether users can interact with a system easily and effectively — can they actually get the task done? UX goes further, covering how the user feels while doing it: satisfaction, comfort, and emotional response. A banking app might have excellent usability (fast, error-free transfers) yet poor UX if its tone feels cold or its confirmation screens leave the user anxious about whether the transfer worked. Good design aims for both.</p>
+    </div>
+    <a class="xref" href="#t1">📍 See Topic 1.2</a>
+  </div>
+
+  <div class="exam-q">
+    <span class="exam-tag likely">Likely · 2025/2026</span>
+    <h4>3. Trace the evolution of user interface design from command-line interfaces to modern interfaces, giving one defining feature of each era.</h4>
+    <div class="answer">
+      <p>Interfaces evolved through five broad eras. <b>CLIs</b> (e.g. MS-DOS, Unix shell) required users to memorise and type exact text commands, with no visual feedback. <b>GUIs</b> (1980s, e.g. Xerox Star, Apple Lisa, Macintosh) introduced the WIMP model — windows, icons, menus, pointers — cutting memory load through direct manipulation. <b>Web UIs</b> (mid-1990s onward) moved interaction into the browser using HTML/CSS/JavaScript, built around hyperlinks and forms. <b>Mobile/touch interfaces</b> (2007 onward) replaced mouse actions with tap, swipe, and pinch gestures, favouring minimal, flat, responsive design. <b>Modern interfaces</b> (2015 onward) add voice assistants, AR/VR, chatbots, and multimodal input that combines voice, touch, and vision.</p>
+    </div>
+    <a class="xref" href="#t3">📍 See Topic 3</a>
+  </div>
+
+  <div class="exam-q">
+    <span class="exam-tag likely">Likely · 2025/2026</span>
+    <h4>4. Explain the WIMP model and describe each of its four components with an example.</h4>
+    <div class="answer">
+      <p>WIMP — Windows, Icons, Menus, Pointer — is the architectural blueprint for how users interact with GUI systems. <b>Windows</b> are independent viewing areas for apps or content, e.g. two Word documents open side by side. <b>Icons</b> are small visual symbols representing files, tools, or actions, e.g. a trash can icon for deletion. <b>Menus</b> are organised lists of commands, e.g. File → Save As. The <b>Pointer</b> is the movable on-screen cursor used to interact with objects, typically controlled by a mouse, trackpad, or finger. Together these four elements let users control a system visually and interactively rather than through memorised text commands.</p>
+    </div>
+    <a class="xref" href="#t4">📍 See Topic 4.3</a>
+  </div>
+
+  <div class="exam-q">
+    <span class="exam-tag likely">Likely · 2025/2026</span>
+    <h4>5. Compare GUI (desktop) and Web UI across at least three features.</h4>
+    <div class="answer">
+      <p>GUI applications run locally (e.g. Photoshop) and are fast because they use system resources directly, whereas Web UIs are accessed through a browser (e.g. Google Docs) and their performance depends on internet speed and server response. GUIs tend to be tool-focused with deep menus suited to complex tasks, while Web UIs are navigation-focused and hyperlink-driven, better suited to content and services. GUIs can also be personalised more deeply for the user, while Web UIs are constrained by what HTML/CSS and the browser allow.</p>
+    </div>
+    <a class="xref" href="#t5">📍 See Topic 5.1</a>
+  </div>
+
+  <div class="exam-q">
+    <span class="exam-tag likely">Likely · 2025/2026</span>
+    <h4>6. State and explain Shneiderman's Eight Golden Rules of interface design.</h4>
+    <div class="answer">
+      <p>(1) <b>Strive for consistency</b> in actions and terminology. (2) <b>Enable frequent users to use shortcuts</b>, like Ctrl+S, to work faster. (3) <b>Offer informative feedback</b> for every user action. (4) <b>Design dialogs to yield closure</b>, e.g. an "Upload complete!" message so users know a task finished. (5) <b>Prevent errors</b> by disabling invalid options and confirming destructive actions. (6) <b>Permit easy reversal of actions</b> through undo/redo. (7) <b>Support internal locus of control</b> so users feel they are directing the system, not the other way round. (8) <b>Reduce short-term memory load</b> by showing visible options instead of requiring users to remember commands.</p>
+    </div>
+    <a class="xref" href="#t7">📍 See Topic 7.4</a>
+  </div>
+
+  <div class="exam-q">
+    <span class="exam-tag likely">Likely · 2025/2026</span>
+    <h4>7. A university is about to deploy a new mobile app for hospital appointment booking. Using the AAUA Student Portal case study as a template, explain how you would carry out a full design evaluation before launch.</h4>
+    <div class="answer">
+      <p>Following the same structure used for the AAUA portal, evaluation would combine <b>Formative</b> and <b>Summative</b> stages using both <b>Empirical</b> and <b>Analytical</b> methods. In the formative stage, a paper or clickable prototype of the appointment-booking flow would be tested with a small group of patients performing tasks such as booking and cancelling an appointment, recording task success, time taken, and points of confusion — these findings drive an early redesign. Empirical methods would follow: usability testing with a larger group to catch remaining friction, field studies observing patients booking appointments in real settings such as a waiting room with unreliable Wi-Fi, interviews/questionnaires to capture subjective satisfaction, and A/B testing to compare, for example, a calendar-view booking screen against a list-view one. In parallel, analytical methods bring in experts: a heuristic evaluation against Nielsen's 10 principles to catch violations like missing loading feedback or inconsistent buttons, and a cognitive walkthrough simulating a first-time patient's steps to flag likely confusion points. Finally, a summative evaluation on the revised app — measuring task completion rate, time per task, error frequency, and satisfaction against the original baseline — confirms whether the redesign actually solved the problems found earlier, the same way AAUA's task completion rose from 70% to 92% after its redesign.</p>
+    </div>
+    <a class="xref" href="#t9">📍 See Topic 9.5</a>
+  </div>
+
+  <div class="exam-q">
+    <span class="exam-tag likely">Likely · 2025/2026</span>
+    <h4>8. Explain the three types of visual metaphor used in GUI design, with an example of each.</h4>
+    <div class="answer">
+      <p><b>Object-based metaphors</b> use real-world physical objects, such as a folder or trash bin icon. <b>Action-based metaphors</b> represent behaviours or operations, such as drag-and-drop mimicking the physical act of moving a file. <b>Environmental metaphors</b> simulate a physical space or context, such as the desktop metaphor, where icons and files are arranged like items on a real desk. Visual metaphors matter because they let users apply knowledge from the physical world to a digital system, reducing the need to memorise abstract commands.</p>
+    </div>
+    <a class="xref" href="#t4">📍 See Topic 4.2</a>
+  </div>
+</section>
+
+<div class="close-line">
+  <div class="big">You've now walked the whole system — from a frustrated CampusChef user to a fully evaluated interface.</div>
+  Good HCI is invisible when it works: nobody thanks a "Submit" button for being where they expected it. Go build (and test) interfaces people don't have to think about.
+</div>
+
+<div class="footer-final">CSC 414 — Human Computer Interaction &nbsp;·&nbsp; APEXHUB &nbsp;·&nbsp; Session 2025/2026</div>
+
+</main>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- THEME TOGGLE (in-memory only) ---------- */
+  var theme = 'light';
+  var themeBtn = document.getElementById('themeToggle');
+  themeBtn.addEventListener('click', function(){
+    theme = theme === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme === 'dark' ? 'dark' : 'light');
+    themeBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+  });
+
+  /* ---------- ACCORDIONS ---------- */
+  document.querySelectorAll('.acc').forEach(function(acc){
+    var btn = acc.querySelector('.acc-btn');
+    var panel = acc.querySelector('.acc-panel');
+    btn.addEventListener('click', function(){
+      var isOpen = acc.classList.contains('open');
+      if(isOpen){
+        acc.classList.remove('open');
+        panel.style.maxHeight = 0;
+      } else {
+        acc.classList.add('open');
+        panel.style.maxHeight = panel.scrollHeight + 40 + 'px';
+      }
+    });
+  });
+
+  /* ---------- HERO CURSOR DEMO ---------- */
+  (function(){
+    var cursor = document.getElementById('heroCursor');
+    var icons = document.querySelectorAll('#heroIconRow .hc-icon');
+    var playBtn = document.getElementById('heroPlay');
+    var i = 0, running = false, timer = null;
+
+    function positionCursor(idx){
+      var icon = icons[idx];
+      var rowRect = icon.parentElement.getBoundingClientRect();
+      var iconRect = icon.getBoundingClientRect();
+      cursor.style.left = (iconRect.left - rowRect.left + iconRect.width/2 - 10) + 'px';
+      cursor.style.top = (iconRect.top - rowRect.top - 22) + 'px';
+    }
+    function clearPops(){ icons.forEach(function(ic){ ic.classList.remove('pop'); }); }
+
+    function step(){
+      clearPops();
+      positionCursor(i);
+      setTimeout(function(){ icons[i].classList.add('pop'); }, 480);
+      i = (i + 1) % icons.length;
+    }
+    // init position
+    setTimeout(function(){ positionCursor(0); }, 50);
+
+    playBtn.addEventListener('click', function(){
+      if(running){
+        running = false;
+        clearInterval(timer);
+        playBtn.textContent = '▶ Play';
+        return;
+      }
+      running = true;
+      playBtn.textContent = '⏸ Pause';
+      step();
+      timer = setInterval(step, 1200);
+    });
+  })();
+
+  /* ---------- TIMELINE ANIMATION (Topic 3) ---------- */
+  (function(){
+    var stages = [
+      {
+        icon:'⌨️', name:'Command-Line Interfaces', years:'1950s – 1970s',
+        html:'<div class="term-window">C:\\&gt; DEL FILE.TXT<br><span class="term-cursor"></span></div>',
+        explain:'Users had to memorise exact commands with no visual confirmation of what was happening — one typo could be costly.'
+      },
+      {
+        icon:'🖥️', name:'GUIs &amp; WIMP', years:'1980s',
+        html:'<div style="display:flex; gap:10px; align-items:center;"><span class="tl-stage-icon">🗂️</span><span class="tl-stage-icon">🖱️</span></div>',
+        explain:'Xerox Star, Apple Lisa and Macintosh introduced windows, icons, menus and pointers — direct manipulation replaced typed commands.'
+      },
+      {
+        icon:'🌐', name:'Web-Based Interfaces', years:'Mid-1990s – present',
+        html:'<div style="display:flex; gap:10px; align-items:center;"><span class="tl-stage-icon">🔗</span><span class="tl-stage-icon">📄</span></div>',
+        explain:'Browsers became the default UI for email, shopping and search, built on HTML, CSS and JavaScript with hyperlinks and forms.'
+      },
+      {
+        icon:'📱', name:'Mobile &amp; Touch Interfaces', years:'2007 – present',
+        html:'<div style="display:flex; gap:10px; align-items:center;"><span class="tl-stage-icon">👆</span><span class="tl-stage-icon">📲</span></div>',
+        explain:'Smartphones replaced the mouse with tap, swipe and pinch gestures, pushing design toward minimalism and flat, responsive layouts.'
+      },
+      {
+        icon:'🗣️', name:'Modern Interfaces', years:'2015 – onward',
+        html:'<div style="display:flex; gap:10px; align-items:center;"><span class="tl-stage-icon">🎙️</span><span class="tl-stage-icon">🥽</span><span class="tl-stage-icon">💬</span></div>',
+        explain:'Voice assistants, AR/VR, chatbots and multimodal interfaces combine voice, touch and vision in one experience.'
+      }
+    ];
+    var idx = 0, running = false, timer = null;
+    var track = document.getElementById('tlTrack');
+    var stageEl = document.getElementById('tlStage');
+    var explainEl = document.getElementById('tlExplain');
+    var indicator = document.getElementById('tlIndicator');
+    var speed = document.getElementById('tlSpeed');
+
+    stages.forEach(function(){ var d=document.createElement('div'); d.className='tl-dot'; track.appendChild(d); });
+    var dots = track.querySelectorAll('.tl-dot');
+
+    function render(){
+      var s = stages[idx];
+      stageEl.innerHTML = '<div style="text-align:center;">' + s.html +
+        '<div class="tl-stage-name" style="margin-top:10px;">' + s.name + '</div>' +
+        '<div class="tl-stage-years">' + s.years + '</div></div>';
+      explainEl.textContent = s.explain;
+      dots.forEach(function(d,i2){ d.classList.toggle('done', i2 <= idx); });
+      indicator.textContent = 'Era ' + (idx+1) + ' of ' + stages.length;
+    }
+    render();
+
+    function goStep(){
+      idx = (idx + 1) % stages.length;
+      render();
+    }
+    document.getElementById('tlStep').addEventListener('click', function(){
+      stopPlay(); goStep();
+    });
+    document.getElementById('tlReset').addEventListener('click', function(){
+      stopPlay(); idx = 0; render();
+    });
+    var playBtn = document.getElementById('tlPlay');
+    function stopPlay(){
+      running = false; clearInterval(timer); playBtn.textContent = '▶ Play';
+    }
+    playBtn.addEventListener('click', function(){
+      if(running){ stopPlay(); return; }
+      running = true; playBtn.textContent = '⏸ Pause';
+      timer = setInterval(function(){
+        idx = (idx + 1) % stages.length;
+        render();
+      }, 2400 - (speed.value * 600));
+    });
+    speed.addEventListener('input', function(){
+      if(running){
+        clearInterval(timer);
+        timer = setInterval(function(){ idx = (idx+1) % stages.length; render(); }, 2400 - (speed.value*600));
+      }
+    });
+  })();
+
+  /* ---------- WIMP ANIMATION (Topic 4.3) ---------- */
+  (function(){
+    var steps = [
+      { key:'window', color:'var(--window)', text:'This whole panel is a Window — an independent viewing area for an app or its content.', target:'.wimp-stage' },
+      { key:'icon', color:'var(--icon)', text:'The small folder, trash and printer symbols are Icons — visual shortcuts to files, tools or actions.', target:'#wimpIcons' },
+      { key:'menu', color:'var(--menu)', text:'"File / Edit / View" is the Menu bar — an organised list of available commands.', target:'#wimpMenu' },
+      { key:'pointer', color:'var(--pointer)', text:'The cursor is the Pointer — the on-screen tool used to select and manipulate everything else.', target:'#wimpPointer' }
+    ];
+    var idx = -1, running=false, timer=null;
+    var stageEl = document.getElementById('wimpStage');
+    var explainEl = document.getElementById('wimpExplain');
+
+    function clearHighlights(){
+      stageEl.style.outline = 'none';
+      document.getElementById('wimpIcons').style.outline = 'none';
+      document.getElementById('wimpMenu').style.outline = 'none';
+      document.getElementById('wimpPointer').style.outline = 'none';
+      document.getElementById('wimpPointer').style.background = 'none';
+    }
+    function render(){
+      clearHighlights();
+      if(idx < 0){ explainEl.textContent = 'Tap Step to highlight each WIMP element in turn.'; return; }
+      var s = steps[idx];
+      var el = document.querySelector(s.target === '.wimp-stage' ? '#wimpStage' : s.target);
+      el.style.outline = '3px solid ' + s.color;
+      el.style.outlineOffset = '2px';
+      el.style.borderRadius = '6px';
+      explainEl.innerHTML = '<b style="color:' + s.color + '">' + s.key.toUpperCase() + '</b> — ' + s.text;
+    }
+    function goStep(){ idx = (idx + 1) % steps.length; render(); }
+    document.getElementById('wimpStep').addEventListener('click', function(){ stopPlay(); goStep(); });
+    document.getElementById('wimpReset').addEventListener('click', function(){ stopPlay(); idx=-1; render(); });
+    var playBtn = document.getElementById('wimpPlay');
+    function stopPlay(){ running=false; clearInterval(timer); playBtn.textContent='▶ Play'; }
+    playBtn.addEventListener('click', function(){
+      if(running){ stopPlay(); return; }
+      running = true; playBtn.textContent = '⏸ Pause';
+      timer = setInterval(goStep, 1800);
+    });
+    render();
+  })();
+
+  /* ---------- EVALUATION CASE STUDY STEPPER (Topic 9.5) ---------- */
+  (function(){
+    var steps = [
+      {
+        title:'Formative — paper prototype, 10 students',
+        text:'Common tasks tried: course registration, result checking. Users struggled to find the "Register Course" button and unlabeled icons confused them.',
+        type:'text', items:['Could not locate "Register Course" easily','Navigation between sections lacked clarity','Icons had no labels']
+      },
+      {
+        title:'Redesign applied',
+        text:'Layout, button placement and visual labels were reworked based on formative findings — before any further testing happened.',
+        type:'text', items:['Buttons relabelled and repositioned','Icons paired with text labels','Navigation simplified']
+      },
+      {
+        title:'Empirical + Analytical methods run in parallel',
+        text:'Usability testing, field studies, interviews and A/B testing (empirical) ran alongside heuristic evaluation and cognitive walkthrough (analytical).',
+        type:'text', items:['Empirical: 12 students tested tasks directly',"Analytical: 3 experts applied Nielsen's 10 heuristics",'A/B test: labelled icons beat icon-only design']
+      },
+      {
+        title:'Summative — revised portal, 10 new students',
+        text:'The same tasks were repeated on the redesigned portal. Compare the metrics below: before (left bar) vs after (right value).',
+        type:'metrics'
+      },
+      {
+        title:'Outcome',
+        text:'Verified: the redesign resolved the issues found in the formative stage, and the portal was signed off as ready for deployment.',
+        type:'text', items:['Task completion rate: 70% → 92%','Time per task: 6 min → 4 min','Satisfaction: 6.5/10 → 8.5/10','Errors per user: 4 → 1']
+      }
+    ];
+    var metrics = [
+      {label:'Task completion rate', before:70, after:92, unit:'%', max:100},
+      {label:'Satisfaction score', before:65, after:85, unit:'/10', displayBefore:'6.5', displayAfter:'8.5', max:100},
+      {label:'Avg. time per task', before:100, after:66, unit:'min', displayBefore:'6', displayAfter:'4', max:100},
+      {label:'Errors per user', before:100, after:25, unit:'', displayBefore:'4', displayAfter:'1', max:100}
+    ];
+    var idx = 0, running=false, timer=null;
+    var stageEl = document.getElementById('evalStage');
+    var explainEl = document.getElementById('evalExplain');
+    var indicator = document.getElementById('evalIndicator');
+
+    function renderMetrics(){
+      var html = '<div class="eval-metrics">';
+      metrics.forEach(function(m){
+        html += '<div class="eval-metric"><div class="m-label">' + m.label + '</div>' +
+          '<div class="m-val">Before: ' + (m.displayBefore || (m.before+m.unit)) + '</div>' +
+          '<div class="bar-track"><div class="bar-fill" data-target="' + m.before + '" style="background:var(--ink-faint);"></div></div>' +
+          '<div class="m-val" style="margin-top:6px;">After: ' + (m.displayAfter || (m.after+m.unit)) + '</div>' +
+          '<div class="bar-track"><div class="bar-fill" data-target="' + m.after + '"></div></div>' +
+          '</div>';
+      });
+      html += '</div>';
+      stageEl.innerHTML = html;
+      setTimeout(function(){
+        stageEl.querySelectorAll('.bar-fill').forEach(function(bar){
+          bar.style.width = bar.getAttribute('data-target') + '%';
+        });
+      }, 60);
+    }
+    function renderText(step){
+      var html = '<div class="eval-text"><div class="tl-stage-name" style="margin-bottom:6px;">' + step.title + '</div><ul>';
+      step.items.forEach(function(it){ html += '<li>' + it + '</li>'; });
+      html += '</ul></div>';
+      stageEl.innerHTML = html;
+    }
+    function render(){
+      var s = steps[idx];
+      if(s.type === 'metrics'){ renderMetrics(); } else { renderText(s); }
+      explainEl.innerHTML = '<b>' + s.title + ':</b> ' + s.text;
+      indicator.textContent = 'Stage ' + (idx+1) + ' of ' + steps.length;
+    }
+    render();
+    function goStep(){ idx = (idx + 1) % steps.length; render(); }
+    document.getElementById('evalStep').addEventListener('click', function(){ stopPlay(); goStep(); });
+    document.getElementById('evalReset').addEventListener('click', function(){ stopPlay(); idx=0; render(); });
+    var playBtn = document.getElementById('evalPlay');
+    function stopPlay(){ running=false; clearInterval(timer); playBtn.textContent='▶ Play'; }
+    playBtn.addEventListener('click', function(){
+      if(running){ stopPlay(); return; }
+      running = true; playBtn.textContent = '⏸ Pause';
+      timer = setInterval(goStep, 2600);
+    });
+  })();
+
+})();
+</script>
+</body>
+</html>
